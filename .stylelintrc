@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "./node_modules/prettier-stylelint/config.js"
+  ],
+  "plugins": [
+    "stylelint-scss",
+    "stylelint-order"
+  ],
+  "rules": {
+    "indentation": 2,
+    "order/order": [
+      "custom-properties",
+      "declarations"
+    ],
+    "order/properties-alphabetical-order": true,
+    "length-zero-no-unit": true,
+    "number-leading-zero": "never",
+    "value-list-comma-space-after": "always"
+  }
+}

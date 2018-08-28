@@ -1,0 +1,41 @@
+.bgWrapper {
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.bg {
+  background: url(../img/background.jpg);
+  background-position: center;
+  background-size: cover;
+  bottom: 0;
+  filter: blur(3px);
+  left: 0;
+  margin: -3px;
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  &::before {
+    background: rgba(175, 172, 172, .2);
+    content: "";
+    height: 100%;
+    position: absolute;
+    width: 100%;
+  }
+}
+
+.intro {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  h1 {
+    color: $white;
+    font-size: 4.6rem;
+    font-weight: 100;
+    letter-spacing: .1rem;
+    text-align: center;
+  }
+}

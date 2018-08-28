@@ -1,0 +1,1 @@
+import '../scss/entry.scss';
