@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const isProduction = !process.env.WEBPACK_SERVE;
 
@@ -122,3 +123,7 @@ module.exports = {
     open: true
   }
 };
+
+if (isProduction) {
+  module.exports.plugins.push(new CleanWebpackPlugin(['dist']));
+}
