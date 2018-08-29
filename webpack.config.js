@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const chokidar = require('chokidar');
 
 const isProduction = !process.env.WEBPACK_SERVE;
 
@@ -120,7 +121,18 @@ module.exports = {
 
   serve: {
     content: path.resolve(__dirname, 'dist'),
-    open: true
+    open: true,
+    add: (app, middleware) => {
+      middleware.webpack().then(result => {
+        const server = result.hotClient.server;
+        const watchPath = path.resolve(__dirname, 'src', '**', '*.ejs');
+        const options = { ignoreInitial: true };
+        const watcher = chokidar.watch(watchPath, options);
+        watcher.on('change', () => {
+          server.broadcast('{ "type": "window-reload", "data": {} }');
+        });
+      });
+    }
   }
 };
 
