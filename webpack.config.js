@@ -34,7 +34,20 @@ module.exports = {
 
       {
         test: /\.ejs$/,
-        use: 'compile-ejs-loader'
+        use: [
+          {
+            loader: 'ejs-templates-loader',
+            options: {
+              delimiter: '$',
+              minify: isProduction,
+              minifyOptions: {
+                collapseInlineTagWhitespace: true,
+                collapseWhitespace: true,
+                minifyJS: true
+              }
+            }
+          }
+        ]
       },
 
       {
