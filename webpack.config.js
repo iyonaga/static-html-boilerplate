@@ -1,15 +1,15 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const chokidar = require('chokidar');
+const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 
-const isProduction = !process.env.WEBPACK_SERVE;
+const isProduction =
+  process.argv[process.argv.indexOf('--mode') + 1] === 'production';
 
 module.exports = {
-  mode: isProduction ? 'production' : 'development',
-
   entry: {
     app: ['@babel/polyfill', './src/js/app.js']
   },
@@ -126,27 +126,22 @@ module.exports = {
     new HtmlWebpackPlugin({
       hash: true,
       filename: 'index.html',
-      template: './src/views/index.ejs'
+      template: './src/views/index.ejs',
+      alwaysWriteToDisk: true
     }),
+    new HtmlWebpackHarddiskPlugin(),
     new MiniCssExtractPlugin({
       filename: './assets/css/style.css'
-    })
+    }),
+    new webpack.HotModuleReplacementPlugin()
   ],
 
-  serve: {
-    content: path.resolve(__dirname, 'dist'),
+  devServer: {
+    contentBase: path.join(__dirname, 'dist'),
+    watchContentBase: true,
     open: true,
-    add: (app, middleware) => {
-      middleware.webpack().then(result => {
-        const server = result.hotClient.server;
-        const watchPath = path.resolve(__dirname, 'src', '**', '*.ejs');
-        const options = { ignoreInitial: true };
-        const watcher = chokidar.watch(watchPath, options);
-        watcher.on('change', () => {
-          server.broadcast('{ "type": "window-reload", "data": {} }');
-        });
-      });
-    }
+    compress: true,
+    hot: true
   }
 };
 
