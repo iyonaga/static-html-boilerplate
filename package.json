@@ -9,11 +9,11 @@
     "build": "webpack --mode production",
     "lint": "yarn lint:js & yarn lint:scss",
     "lint:js": "eslint --ext .js,.jsx src --format codeframe",
-    "lint:scss": "stylelint src/scss/**/*.scss",
+    "lint:scss": "stylelint 'src/scss/**/*.scss'",
     "lint:fix": "eslint --ext .js,.jsx src --format codeframe --fix",
     "format": "yarn format:js && yarn format:scss",
-    "format:js": "prettier-eslint --write src/js/**/*.js",
-    "format:scss": "prettier-stylelint --quiet --write src/scss/**/*.scss"
+    "format:js": "prettier-eslint --write 'src/js/**/*.js'",
+    "format:scss": "prettier-stylelint --quiet --write 'src/scss/**/*.scss'"
   },
   "husky": {
     "hooks": {
