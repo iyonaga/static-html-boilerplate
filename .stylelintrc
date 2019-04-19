@@ -19,13 +19,16 @@
     }],
     "declaration-empty-line-before": null,
     "indentation": 2,
+    "length-zero-no-unit": true,
+    "number-leading-zero": "never",
+    "value-list-comma-space-after": "always",
+    "selector-pseudo-class-no-unknown": [true, {
+      "ignorePseudoClasses": ["global"]
+    }],
     "order/order": [
       "custom-properties",
       "declarations"
     ],
-    "order/properties-alphabetical-order": true,
-    "length-zero-no-unit": true,
-    "number-leading-zero": "never",
-    "value-list-comma-space-after": "always"
+    "order/properties-alphabetical-order": true
   }
 }
