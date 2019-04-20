@@ -70,6 +70,21 @@ module.exports = {
       },
 
       {
+        test: /\.njk$/,
+        use: [
+          {
+            loader: 'nunjucks-render-loader',
+            options: {
+              path: path.join(src, 'views'),
+              context: {
+                img_dir: path.join(src, 'img')
+              }
+            }
+          }
+        ]
+      },
+
+      {
         test: /\.s?css$/,
         use: [
           'css-hot-loader',
