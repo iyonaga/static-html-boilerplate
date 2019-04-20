@@ -1,22 +1,41 @@
 const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackAdditionalTemplatePlugin = require('html-webpack-additional-template-plugin');
+const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
 const TerserPlugin = require('terser-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+const ImageminPlugin = require('imagemin-webpack');
+const imageminGifsicle = require('imagemin-gifsicle');
+const imageminMozjpeg = require('imagemin-mozjpeg');
+const imageminPngquant = require('imagemin-pngquant');
+const imageminSvgo = require('imagemin-svgo');
+const imageminWebp = require('imagemin-webp');
 
+const src = path.join(__dirname, 'src');
+const dist = path.join(__dirname, 'dist');
 const isProduction =
   process.argv[process.argv.indexOf('--mode') + 1] === 'production';
 
+const pages = require(path.join(src, 'views/pages.json'));
+const additionalTemplate = pages.map(page => {
+  return {
+    template: path.join(src, 'views', page.template),
+    filename: page.filename
+  };
+});
+
 module.exports = {
   entry: {
-    app: ['@babel/polyfill', './src/js/app.js']
+    app: path.join(src, 'js/app.js')
   },
 
   output: {
-    path: path.join(__dirname, './dist'),
-    filename: './assets/js/[name].js'
+    path: dist,
+    filename: 'assets/js/[name].js',
+    publicPath: '/'
   },
 
   module: {
@@ -58,25 +77,45 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              importLoaders: 2
+              importLoaders: 3,
+              url: true,
+              modules: false
             }
           },
-          'postcss-loader',
-          'sass-loader'
+          {
+            loader: 'postcss-loader',
+            options: {
+              config: {
+                path: path.resolve(__dirname, './postcss.config.js')
+              }
+            }
+          },
+          'sass-loader',
+          'import-glob-loader'
         ]
       },
 
       {
-        test: /\.(jpe?g|png|gif|svg|ico)$/,
-        include: [path.resolve(__dirname, 'src', 'img')],
+        test: /\.svg$/,
+        exclude: path.resolve(src, 'fonts'),
+        use: [
+          {
+            loader: 'svg-url-loader',
+            options: {
+              noquotes: true
+            }
+          }
+        ]
+      },
+
+      {
+        test: /\.(jpe?g|png|gif|webp|ico)$/,
         use: [
           {
             loader: 'url-loader',
             options: {
-              limit: 8192,
-              name: '[hash].[ext]',
-              outputPath: 'assets/img/',
-              publicPath: '/assets/img/'
+              limit: 10 * 1024,
+              outputPath: 'assets/img'
             }
           }
         ]
@@ -84,18 +123,12 @@ module.exports = {
 
       {
         test: /\.(woff|woff2|eot|otf|ttf|svg)$/,
-        include: [
-          path.resolve(__dirname, 'src', 'font'),
-          path.resolve(__dirname, 'node_modules')
-        ],
+        exclude: path.join(src, 'img'),
         use: [
           {
             loader: 'file-loader',
             options: {
-              name: 'assets/fonts/[hash].[ext]',
-              publicPath: path => {
-                return '../' + path;
-              }
+              outputPath: 'assets/fonts'
             }
           }
         ]
@@ -103,10 +136,53 @@ module.exports = {
     ]
   },
 
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'assets/css/styles.css'
+    }),
+    new HtmlWebpackPlugin({
+      hash: true,
+      additionalTemplate: additionalTemplate,
+      alwaysWriteToDisk: true
+    }),
+    new HtmlWebpackAdditionalTemplatePlugin(),
+    new HtmlWebpackHarddiskPlugin(),
+    new ImageminPlugin({
+      bail: false,
+      // cache: true,
+      imageminOptions: {
+        plugins: [
+          imageminGifsicle(),
+          imageminMozjpeg({
+            progressive: true,
+            quality: 75
+          }),
+          imageminPngquant({
+            quality: '65-90'
+          }),
+          imageminSvgo(),
+          imageminWebp({
+            quality: 75
+          })
+        ]
+      }
+    }),
+    new webpack.HotModuleReplacementPlugin(),
+    new WebpackBuildNotifierPlugin({
+      suppressSuccess: true,
+      sound: false
+    })
+  ],
+
   optimization: {
     splitChunks: {
-      name: 'vendor',
-      chunks: 'initial'
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/].*\.js$/,
+          name: 'vendor',
+          chunks: 'all'
+        }
+      }
     },
     minimizer: isProduction
       ? [
@@ -122,29 +198,18 @@ module.exports = {
       : []
   },
 
-  plugins: [
-    new HtmlWebpackPlugin({
-      hash: true,
-      filename: 'index.html',
-      template: './src/views/index.ejs',
-      alwaysWriteToDisk: true
-    }),
-    new HtmlWebpackHarddiskPlugin(),
-    new MiniCssExtractPlugin({
-      filename: './assets/css/style.css'
-    }),
-    new webpack.HotModuleReplacementPlugin()
-  ],
-
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: dist,
     watchContentBase: true,
     open: true,
     compress: true,
-    hot: true
+    hot: true,
+    host: '0.0.0.0',
+    disableHostCheck: true,
+    useLocalIp: true
   }
 };
 
 if (isProduction) {
-  module.exports.plugins.push(new CleanWebpackPlugin(['dist']));
+  module.exports.plugins.push(new CleanWebpackPlugin());
 }
