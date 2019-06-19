@@ -15,22 +15,6 @@
     "format:js": "prettier-eslint --write 'src/js/**/*.js'",
     "format:scss": "prettier-stylelint --quiet --write 'src/scss/**/*.scss'"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.js": [
-      "prettier-eslint --write",
-      "git add"
-    ],
-    "*.scss": [
-      "prettier --write",
-      "stylelint --fix",
-      "git add"
-    ]
-  },
   "prettier": {},
   "devDependencies": {
     "@babel/core": "^7.4.5",
