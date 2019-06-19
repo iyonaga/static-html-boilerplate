@@ -186,7 +186,8 @@ module.exports = {
     new WebpackBuildNotifierPlugin({
       suppressSuccess: true,
       sound: false
-    })
+    }),
+    new webpack.ProgressPlugin()
   ],
 
   optimization: {
