@@ -23,19 +23,19 @@ const pages = require(path.join(src, 'views/pages.json'));
 const additionalTemplate = pages.map(page => {
   return {
     template: path.join(src, 'views', page.template),
-    filename: page.filename
+    filename: page.filename,
   };
 });
 
 module.exports = {
   entry: {
-    app: path.join(src, 'js/app.js')
+    app: path.join(src, 'js/app.js'),
   },
 
   output: {
     path: dist,
     filename: 'assets/js/[name].js',
-    publicPath: '/'
+    publicPath: '/',
   },
 
   module: {
@@ -46,9 +46,9 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            cacheDirectory: true
-          }
-        }
+            cacheDirectory: true,
+          },
+        },
       },
 
       {
@@ -62,11 +62,11 @@ module.exports = {
               minifyOptions: {
                 collapseInlineTagWhitespace: true,
                 collapseWhitespace: true,
-                minifyJS: true
-              }
-            }
-          }
-        ]
+                minifyJS: true,
+              },
+            },
+          },
+        ],
       },
 
       {
@@ -77,11 +77,11 @@ module.exports = {
             options: {
               path: path.join(src, 'views'),
               context: {
-                img_dir: path.join(src, 'img')
-              }
-            }
-          }
-        ]
+                img_dir: path.join(src, 'img'),
+              },
+            },
+          },
+        ],
       },
 
       {
@@ -94,20 +94,20 @@ module.exports = {
             options: {
               importLoaders: 3,
               url: true,
-              modules: false
-            }
+              modules: false,
+            },
           },
           {
             loader: 'postcss-loader',
             options: {
               config: {
-                path: path.resolve(__dirname, './postcss.config.js')
-              }
-            }
+                path: path.resolve(__dirname, './postcss.config.js'),
+              },
+            },
           },
           'sass-loader',
-          'import-glob-loader'
-        ]
+          'import-glob-loader',
+        ],
       },
 
       {
@@ -117,10 +117,10 @@ module.exports = {
           {
             loader: 'svg-url-loader',
             options: {
-              noquotes: true
-            }
-          }
-        ]
+              noquotes: true,
+            },
+          },
+        ],
       },
 
       {
@@ -130,10 +130,10 @@ module.exports = {
             loader: 'url-loader',
             options: {
               limit: 10 * 1024,
-              outputPath: 'assets/img'
-            }
-          }
-        ]
+              outputPath: 'assets/img',
+            },
+          },
+        ],
       },
 
       {
@@ -143,22 +143,22 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              outputPath: 'assets/fonts'
-            }
-          }
-        ]
-      }
-    ]
+              outputPath: 'assets/fonts',
+            },
+          },
+        ],
+      },
+    ],
   },
 
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'assets/css/styles.css'
+      filename: 'assets/css/styles.css',
     }),
     new HtmlWebpackPlugin({
       hash: true,
       additionalTemplate: additionalTemplate,
-      alwaysWriteToDisk: true
+      alwaysWriteToDisk: true,
     }),
     new HtmlWebpackAdditionalTemplatePlugin(),
     new HtmlWebpackHarddiskPlugin(),
@@ -170,24 +170,24 @@ module.exports = {
           imageminGifsicle(),
           imageminMozjpeg({
             progressive: true,
-            quality: 75
+            quality: 75,
           }),
           imageminPngquant({
-            quality: '65-90'
+            quality: '65-90',
           }),
           imageminSvgo(),
           imageminWebp({
-            quality: 75
-          })
-        ]
-      }
+            quality: 75,
+          }),
+        ],
+      },
     }),
     new webpack.HotModuleReplacementPlugin(),
     new WebpackBuildNotifierPlugin({
       suppressSuccess: true,
-      sound: false
+      sound: false,
     }),
-    new webpack.ProgressPlugin()
+    new webpack.ProgressPlugin(),
   ],
 
   optimization: {
@@ -196,9 +196,9 @@ module.exports = {
         vendor: {
           test: /[\\/]node_modules[\\/].*\.js$/,
           name: 'vendor',
-          chunks: 'all'
-        }
-      }
+          chunks: 'all',
+        },
+      },
     },
     minimizer: isProduction
       ? [
@@ -206,12 +206,12 @@ module.exports = {
             parallel: true,
             terserOptions: {
               compress: {
-                drop_console: true
-              }
-            }
-          })
+                drop_console: true,
+              },
+            },
+          }),
         ]
-      : []
+      : [],
   },
 
   devServer: {
@@ -222,8 +222,8 @@ module.exports = {
     hot: true,
     host: '0.0.0.0',
     disableHostCheck: true,
-    useLocalIp: true
-  }
+    useLocalIp: true,
+  },
 };
 
 if (isProduction) {

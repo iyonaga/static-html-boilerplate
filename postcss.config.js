@@ -9,10 +9,10 @@ module.exports = {
         'default',
         {
           discardComments: {
-            removeAll: true
-          }
-        }
-      ]
-    })
-  ]
+            removeAll: true,
+          },
+        },
+      ],
+    }),
+  ],
 };
