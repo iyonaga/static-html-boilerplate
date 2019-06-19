@@ -7,11 +7,9 @@ module.exports = api => {
         '@babel/preset-env',
         {
           modules: false,
-          targets: {
-            ie: '11'
-          },
           useBuiltIns: 'usage',
-          debug: true
+          corejs: 3
+          // debug: true
         }
       ]
     ],
