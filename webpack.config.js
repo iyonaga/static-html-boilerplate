@@ -30,7 +30,7 @@ const additionalTemplate = pages.map(page => {
 
 module.exports = {
   entry: {
-    app: path.join(src, 'js/app.js'),
+    app: path.join(src, 'js/app.ts'),
   },
 
   output: {
@@ -42,7 +42,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(j|t)sx?$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
