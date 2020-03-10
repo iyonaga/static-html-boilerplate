@@ -8,16 +8,16 @@ module.exports = api => {
         {
           modules: false,
           useBuiltIns: 'usage',
-          corejs: 3
+          corejs: 3,
           // debug: true
-        }
-      ]
+        },
+      ],
     ],
     plugins: [
       '@babel/transform-async-to-generator',
       '@babel/proposal-class-properties',
       '@babel/proposal-object-rest-spread',
-      '@babel/plugin-proposal-function-bind'
-    ]
+      '@babel/plugin-proposal-function-bind',
+    ],
   };
 };
