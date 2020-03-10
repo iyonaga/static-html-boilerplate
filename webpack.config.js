@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackAdditionalTemplatePlugin = require('html-webpack-additional-template-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
+const WebpackBar = require('webpackbar');
 const TerserPlugin = require('terser-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ImageminPlugin = require('imagemin-webpack');
@@ -187,7 +188,7 @@ module.exports = {
       suppressSuccess: true,
       sound: false,
     }),
-    new webpack.ProgressPlugin(),
+    new WebpackBar(),
   ],
 
   optimization: {
