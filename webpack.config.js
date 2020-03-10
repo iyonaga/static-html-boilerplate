@@ -200,18 +200,16 @@ module.exports = {
         },
       },
     },
-    minimizer: isProduction
-      ? [
-          new TerserPlugin({
-            parallel: true,
-            terserOptions: {
-              compress: {
-                drop_console: true,
-              },
-            },
-          }),
-        ]
-      : [],
+    minimizer: [
+      new TerserPlugin({
+        parallel: true,
+        terserOptions: {
+          compress: {
+            drop_console: true,
+          },
+        },
+      }),
+    ],
   },
 
   devServer: {
