@@ -30,12 +30,12 @@ const additionalTemplate = pages.map(page => {
 
 module.exports = {
   entry: {
-    app: path.join(src, 'js/app.ts'),
+    app: path.join(src, 'scripts/app.ts'),
   },
 
   output: {
     path: dist,
-    filename: 'assets/js/[name].js',
+    filename: 'assets/scripts/[name].js',
     publicPath: '/',
   },
 
@@ -78,7 +78,7 @@ module.exports = {
             options: {
               path: path.join(src, 'views'),
               context: {
-                img_dir: path.join(src, 'img'),
+                img_dir: path.join(src, 'images'),
               },
             },
           },
@@ -131,7 +131,7 @@ module.exports = {
             loader: 'url-loader',
             options: {
               limit: 10 * 1024,
-              outputPath: 'assets/img',
+              outputPath: 'assets/images',
             },
           },
         ],
@@ -139,7 +139,7 @@ module.exports = {
 
       {
         test: /\.(woff|woff2|eot|otf|ttf|svg)$/,
-        exclude: path.join(src, 'img'),
+        exclude: path.join(src, 'images'),
         use: [
           {
             loader: 'file-loader',
@@ -154,7 +154,7 @@ module.exports = {
 
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'assets/css/styles.css',
+      filename: 'assets/styles/styles.css',
     }),
     new HtmlWebpackPlugin({
       hash: true,
