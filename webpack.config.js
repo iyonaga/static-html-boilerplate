@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackAdditionalTemplatePlugin = require('html-webpack-additional-template-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
 const WebpackBar = require('webpackbar');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -165,12 +166,16 @@ module.exports = {
       filename: 'assets/styles/styles.css',
     }),
     new HtmlWebpackPlugin({
+      inject: 'head',
       hash: true,
       additionalTemplate: additionalTemplate,
       alwaysWriteToDisk: true,
     }),
     new HtmlWebpackAdditionalTemplatePlugin(),
     new HtmlWebpackHarddiskPlugin(),
+    new ScriptExtHtmlWebpackPlugin({
+      defaultAttribute: 'defer',
+    }),
     new ImageminPlugin({
       bail: false,
       // cache: true,
