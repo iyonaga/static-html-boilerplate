@@ -30,6 +30,7 @@ module.exports = {
         ignorePseudoClasses: ['global'],
       },
     ],
+    'value-keyword-case': null,
     'order/order': ['custom-properties', 'declarations'],
     'order/properties-alphabetical-order': true,
   },
