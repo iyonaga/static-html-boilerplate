@@ -1,12 +1,13 @@
 {
-  "*.js": [
-    "prettier-eslint --write"
+  "*.{js,ts}": [
+    "eslint --fix",
+    "prettier --write"
   ],
-  "*.scss": [
-    "prettier --write",
-    "stylelint --fix"
+  "*.{css,scss}": [
+    "stylelint --fix --allow-empty-input",
+    "prettier --write"
   ],
   "*.json": [
     "prettier --write"
-  ]
+  ],
 }
